@@ -43,8 +43,8 @@ export default function App() {
 					<Text>{option.text}</Text>
 				</TouchableOpacity>
 			))}
-			<Button title="add to database" onPress={onSubmit}>
-				Add to Database
+			<Button title="submit" onPress={onSubmit}>
+				Submit
 			</Button>
 			<StatusBar style="auto" />
 		</View>
