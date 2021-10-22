@@ -5,8 +5,8 @@ import RadioButton from './RadioButton';
 import { fetchZipCodes } from './utils';
 
 export default function App() {
-	const [zipInput, setZipInput] = useState('');
-	const [radioIndex, setRadioIndex] = useState(0);
+	const [zipInput, setZipInput] = useState(null);
+	const [radioIndex, setRadioIndex] = useState(null);
 	const [display, setDisplay] = useState('');
 
 	const options = [
@@ -18,10 +18,11 @@ export default function App() {
 	const [radioGroup, setRadioGroup] = useState(options);
 
 	const onSubmit = async () => {
-		//Alert.alert(radioGroup[radioIndex].key, zipInput);
-		const res = await fetchZipCodes(radioGroup[radioIndex].key, zipInput);
-		setZipInput('');
-		setDisplay(res);
+		if (typeof radioIndex === 'number') {
+			const res = await fetchZipCodes(radioGroup[radioIndex].key, zipInput);
+			setZipInput(null);
+			setDisplay(res);
+		} else setDisplay('select an action from the list above');
 	};
 
 	const handleRadioClick = (i) => {
@@ -47,7 +48,7 @@ export default function App() {
 					margin: 3,
 					textAlign: 'center',
 				}}
-				defaultValue={zipInput}
+				value={zipInput}
 				placeholder="enter zip code here"
 				returnKeyType="done"
 				onSubmitEditing={onSubmit}
