@@ -5,7 +5,7 @@ import RadioButton from './RadioButton';
 import { fetchZipCodes } from './utils';
 
 export default function App() {
-	const [zipInput, setZipInput] = useState(null);
+	const [zipInput, setZipInput] = useState('');
 	const [radioIndex, setRadioIndex] = useState(null);
 	const [display, setDisplay] = useState('');
 

@@ -8,9 +8,12 @@ export async function fetchZipCodes(action, zipcode) {
 			const data = await res.json();
 			return data;
 		} else {
-			const res = await fetch(`${URL_PROD}/${action}/${zipcode}`);
-			const data = await res.json();
-			return data;
+			if (!zipcode) return 'please enter a valid zip code';
+			else {
+				const res = await fetch(`${URL_PROD}/${action}/${zipcode}`);
+				const data = await res.json();
+				return data;
+			}
 		}
 	} catch (error) {
 		console.error(error);
