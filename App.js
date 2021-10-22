@@ -20,7 +20,7 @@ export default function App() {
 	const onSubmit = async () => {
 		if (typeof radioIndex === 'number') {
 			const res = await fetchZipCodes(radioGroup[radioIndex].key, zipInput);
-			setZipInput(null);
+			setZipInput('');
 			setDisplay(res);
 		} else setDisplay('select an action from the list above');
 	};
