@@ -1,56 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import {
-	Button,
-	StyleSheet,
-	Text,
-	TextInput,
-	View,
-	Alert,
-	TouchableOpacity,
-} from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, Alert } from 'react-native';
+import RadioButton from './RadioButton';
+import { fetchZipCodes } from './utils';
 
 export default function App() {
 	const [zipInput, setZipInput] = useState('');
-	const [insert, setInsert] = useState({ selected: false, key: 'insert' });
-	const [deleteZip, setDeleteZip] = useState({
-		selected: false,
-		key: 'delete',
-	});
-	const [has, setHas] = useState({ selected: false, key: 'has' });
-	const [display, setdispaly] = useState({ selected: false, key: 'display' });
+	const [radioIndex, setRadioIndex] = useState(0);
+	const [display, setDisplay] = useState('');
 
 	const options = [
-		{ key: 'insert', text: 'add zip code to database', selected: false },
-		{ key: 'delete', text: 'delete zip code from database', selected: false },
-		{ key: 'has', text: 'is zip code in database', selected: false },
-		{ key: 'display', text: 'get all zip codes', selected: false },
+		{ key: 'insert', text: 'add zip code to database', isSelected: false },
+		{ key: 'delete', text: 'delete zip code from database', isSelected: false },
+		{ key: 'has', text: 'is zip code in database', isSelected: false },
+		{ key: 'display', text: 'get all zip codes', isSelected: false },
 	];
 	const [radioGroup, setRadioGroup] = useState(options);
 
-	const onSubmit = () => {
-		Alert.alert(zipInput);
+	const onSubmit = async () => {
+		//Alert.alert(radioGroup[radioIndex].key, zipInput);
+		const res = await fetchZipCodes(radioGroup[radioIndex].key, zipInput);
 		setZipInput('');
+		setDisplay(res);
 	};
 
-	const onRadioClick = (i) => {
+	const handleRadioClick = (i) => {
 		setRadioGroup((prev) => {
 			return prev.map((item, idx) => {
-				if (idx === i) return { ...item, selected: true };
-				else return { ...item, selected: false };
+				if (idx === i) return { ...item, isSelected: true };
+				else return { ...item, isSelected: false };
 			});
 		});
-		console.log(radioGroup[i].key);
+		setRadioIndex(i);
 	};
-	console.log(radioGroup);
+
 	return (
 		<View style={styles.container}>
-			<Text>Zip Code</Text>
+			<Text style={{ fontSize: 25 }}>Enter a zip code:</Text>
 			<TextInput
 				style={{
 					height: 40,
+					width: 150,
 					borderColor: 'gray',
 					borderWidth: 1,
+					borderRadius: 3,
+					margin: 3,
+					textAlign: 'center',
 				}}
 				defaultValue={zipInput}
 				placeholder="enter zip code here"
@@ -58,15 +53,25 @@ export default function App() {
 				onSubmitEditing={onSubmit}
 				onChangeText={(text) => setZipInput(text)}
 			/>
-			{radioGroup.map((option, i) => (
-				<TouchableOpacity key={i} onPress={() => onRadioClick(i)}>
-					<Text>{option.text}</Text>
-				</TouchableOpacity>
-			))}
-			<Button title="submit" onPress={onSubmit}>
-				Submit
+			<View>
+				<Text style={{ textAlign: 'center', fontSize: 25 }}>
+					Choose an action:
+				</Text>
+				{radioGroup.map((option, i) => (
+					<RadioButton
+						key={i}
+						onSelect={handleRadioClick}
+						radioButtonDetails={option}
+						index={i}
+					></RadioButton>
+				))}
+			</View>
+
+			<Button color="salmon" title="submit" onPress={onSubmit}>
+				Submit!
 			</Button>
 			<StatusBar style="auto" />
+			<Text>{display}</Text>
 		</View>
 	);
 }
