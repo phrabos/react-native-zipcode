@@ -1,11 +1,10 @@
 {
-  "expo": {
-    "name": "zipcodes-front",
-    "slug": "zipcodes-front",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  },
-  "name": "zipcodes-front"
+	"expo": {
+		"name": "zipcodes API",
+		"icon": "./zipcode.png",
+		"slug": "zipcode",
+		"version": "1.0.0",
+		"assetBundlePatterns": ["**/*"]
+	},
+	"name": "zipcodes-front"
 }
